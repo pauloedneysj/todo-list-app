@@ -25,61 +25,80 @@ export type Mutation = {
 
 
 export type MutationCreateTodoArgs = {
-  description?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
 };
 
 
 export type MutationDeleteTodoArgs = {
-  id?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
 };
 
 
 export type MutationUpdateTodoArgs = {
-  description?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['ISODate']>;
+  description: Scalars['String'];
+  id: Scalars['String'];
+  updatedAt: Scalars['ISODate'];
+};
+
+export type Pagination = {
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  todos: Array<Todo>;
+  todos?: Maybe<Todos>;
+};
+
+
+export type QueryTodosArgs = {
+  pagination?: InputMaybe<Pagination>;
 };
 
 export type Todo = {
   __typename?: 'Todo';
-  createdAt?: Maybe<Scalars['ISODate']>;
+  createdAt: Scalars['ISODate'];
   description: Scalars['String'];
-  id?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['ISODate']>;
+  id: Scalars['String'];
+  updatedAt: Scalars['ISODate'];
 };
 
-export type TodosQueryVariables = Exact<{ [key: string]: never; }>;
+export type Todos = {
+  __typename?: 'Todos';
+  totalPages: Scalars['Int'];
+  value: Array<Todo>;
+};
+
+export type TodosQueryVariables = Exact<{
+  offset: Scalars['Int'];
+  limit: Scalars['Int'];
+}>;
 
 
-export type TodosQuery = { __typename?: 'Query', todos: Array<{ __typename?: 'Todo', id?: string | null, description: string, createdAt?: any | null, updatedAt?: any | null }> };
+export type TodosQuery = { __typename?: 'Query', todos?: { __typename?: 'Todos', totalPages: number, value: Array<{ __typename?: 'Todo', id: string, description: string, createdAt: any, updatedAt: any }> } | null };
 
 export type CreateTodoMutationVariables = Exact<{
-  description?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
 }>;
 
 
-export type CreateTodoMutation = { __typename?: 'Mutation', createTodo?: { __typename?: 'Todo', id?: string | null, description: string } | null };
+export type CreateTodoMutation = { __typename?: 'Mutation', createTodo?: { __typename?: 'Todo', id: string, description: string } | null };
 
 export type UpdateTodoMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['ISODate']>;
+  id: Scalars['String'];
+  description: Scalars['String'];
+  updatedAt: Scalars['ISODate'];
 }>;
 
 
-export type UpdateTodoMutation = { __typename?: 'Mutation', updateTodo?: { __typename?: 'Todo', id?: string | null, description: string, updatedAt?: any | null } | null };
+export type UpdateTodoMutation = { __typename?: 'Mutation', updateTodo?: { __typename?: 'Todo', id: string, description: string, updatedAt: any } | null };
 
 export type DeleteTodoMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
 }>;
 
 
-export type DeleteTodoMutation = { __typename?: 'Mutation', deleteTodo?: { __typename?: 'Todo', id?: string | null, description: string } | null };
+export type DeleteTodoMutation = { __typename?: 'Mutation', deleteTodo?: { __typename?: 'Todo', id: string, description: string } | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -107,8 +126,11 @@ export default {
               {
                 "name": "description",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -124,8 +146,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -141,22 +166,31 @@ export default {
               {
                 "name": "description",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "updatedAt",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -170,6 +204,92 @@ export default {
         "fields": [
           {
             "name": "todos",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Todos",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "pagination",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Todo",
+        "fields": [
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "description",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "updatedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Todos",
+        "fields": [
+          {
+            "name": "totalPages",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "value",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -190,48 +310,6 @@ export default {
         "interfaces": []
       },
       {
-        "kind": "OBJECT",
-        "name": "Todo",
-        "fields": [
-          {
-            "name": "createdAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "description",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "id",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "updatedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
         "kind": "SCALAR",
         "name": "Any"
       }
@@ -241,21 +319,24 @@ export default {
 } as unknown as IntrospectionQuery;
 
 export const TodosDocument = gql`
-    query Todos {
-  todos {
-    id
-    description
-    createdAt
-    updatedAt
+    query Todos($offset: Int!, $limit: Int!) {
+  todos(pagination: {offset: $offset, limit: $limit}) {
+    value {
+      id
+      description
+      createdAt
+      updatedAt
+    }
+    totalPages
   }
 }
     `;
 
-export function useTodosQuery(options?: Omit<Urql.UseQueryArgs<TodosQueryVariables>, 'query'>) {
+export function useTodosQuery(options: Omit<Urql.UseQueryArgs<TodosQueryVariables>, 'query'>) {
   return Urql.useQuery<TodosQuery, TodosQueryVariables>({ query: TodosDocument, ...options });
 };
 export const CreateTodoDocument = gql`
-    mutation CreateTodo($description: String) {
+    mutation CreateTodo($description: String!) {
   createTodo(description: $description) {
     id
     description
@@ -267,7 +348,7 @@ export function useCreateTodoMutation() {
   return Urql.useMutation<CreateTodoMutation, CreateTodoMutationVariables>(CreateTodoDocument);
 };
 export const UpdateTodoDocument = gql`
-    mutation UpdateTodo($id: String, $description: String, $updatedAt: ISODate) {
+    mutation UpdateTodo($id: String!, $description: String!, $updatedAt: ISODate!) {
   updateTodo(id: $id, description: $description, updatedAt: $updatedAt) {
     id
     description
@@ -280,7 +361,7 @@ export function useUpdateTodoMutation() {
   return Urql.useMutation<UpdateTodoMutation, UpdateTodoMutationVariables>(UpdateTodoDocument);
 };
 export const DeleteTodoDocument = gql`
-    mutation DeleteTodo($id: String) {
+    mutation DeleteTodo($id: String!) {
   deleteTodo(id: $id) {
     id
     description

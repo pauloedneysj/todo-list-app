@@ -1,20 +1,23 @@
-query Todos {
-  todos {
-    id
-    description
-    createdAt
-    updatedAt
+query Todos($offset: Int!, $limit: Int!) {
+  todos(pagination: { offset: $offset, limit: $limit }) {
+    value {
+      id
+      description
+      createdAt
+      updatedAt
+    }
+    totalPages
   }
 }
 
-mutation CreateTodo($description: String) {
+mutation CreateTodo($description: String!) {
   createTodo(description: $description) {
     id
     description
   }
 }
 
-mutation UpdateTodo($id: String, $description: String, $updatedAt: ISODate) {
+mutation UpdateTodo($id: String!, $description: String!, $updatedAt: ISODate!) {
   updateTodo(id: $id, description: $description, updatedAt: $updatedAt) {
     id
     description
@@ -22,7 +25,7 @@ mutation UpdateTodo($id: String, $description: String, $updatedAt: ISODate) {
   }
 }
 
-mutation DeleteTodo($id: String) {
+mutation DeleteTodo($id: String!) {
   deleteTodo(id: $id) {
     id
     description

@@ -1,56 +1,66 @@
-import { createContext, useContext, useState, useMemo } from "react";
-import IconButton from "@mui/material/IconButton";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Appbar from "./components/Appbar/Appbar";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "urql";
+import { client } from "./services/api";
+import { createGlobalStyle } from "styled-components";
+import { FeedbackProvider } from "./context/feedback";
+import { ToggleColorProvider } from "./context/theme";
+import TodosList from "./pages/TodosList";
 
-const ColorModeContext = createContext({ toggleColorMode: () => {} });
-
-export function ThemeIcon() {
-  const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
-  return (
-    <IconButton
-      sx={{ ml: 1 }}
-      onClick={colorMode.toggleColorMode}
-      color="inherit"
-    >
-      {theme.palette.mode === "dark" ? (
-        <Brightness7Icon />
-      ) : (
-        <Brightness4Icon />
-      )}
-    </IconButton>
-  );
+const GlobalStyle = createGlobalStyle`
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
-
-export function ToggleColorMode() {
-  const [mode, setMode] = useState<"light" | "dark">("light");
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-    }),
-    []
-  );
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode]
-  );
-
-  return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <Appbar />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
-  );
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
 }
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+`;
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <Provider value={client}>
+      <ToggleColorProvider>
+        <FeedbackProvider>
+          <GlobalStyle />
+          <TodosList />
+        </FeedbackProvider>
+      </ToggleColorProvider>
+    </Provider>
+  </React.StrictMode>
+);

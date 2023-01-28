@@ -1,16 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useCreateTodoMutation } from "../../generated/graphql";
 import TextField from "@mui/material/TextField";
-import { IconAdd } from "../Icon/Icon";
-import { Alert, Button, InputAdornment, Stack } from "@mui/material";
-
-const FormContainer = styled.form`
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20vh;
-`;
+import { IconAdd } from "../../assets/Icons/Icons";
+import { Grid, InputAdornment, useMediaQuery, useTheme } from "@mui/material";
+import { useFeedback } from "../../context/feedback";
 
 const AddButton = styled.button`
   padding: 0;
@@ -22,70 +16,58 @@ const AddButton = styled.button`
 export default function TodoAdd() {
   const [, createTodo] = useCreateTodoMutation();
   const [description, setDescription] = useState("");
-  const [handleSuccess, setSucess] = useState(false);
-  const [handleError, setError] = useState(false);
 
-  useEffect(() => {
-    handleSuccess &&
-      setTimeout(function () {
-        setSucess(false);
-      }, 3000);
-  }, [handleSuccess]);
-
-  useEffect(() => {
-    handleError &&
-      setTimeout(function () {
-        setError(false);
-      }, 3000);
-  }, [handleError]);
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isErrors, isSuccesses, setError, setSuccess } = useFeedback();
 
   return (
-    <FormContainer
-      onSubmit={(e) => {
-        if (description) {
-          createTodo({ description: description }).then((result) => {
-            if (result.error) setError(true);
-            else setSucess(true);
-          });
-        }
-        e.preventDefault();
-      }}
+    <Grid
+      item
+      container
+      sx={{ width: 500, justifyContent: "center", alignItems: "center" }}
     >
-      <TextField
-        id="outlined-basic"
-        type="text"
-        sx={{
-          display: "flex",
-          width: "80vh",
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (description) {
+            createTodo({ description: description }).then((result) => {
+              if (result.error) {
+                setError({
+                  ...isErrors,
+                  type: { add: true, edit: false, remove: false },
+                  status: true,
+                });
+              } else
+                setSuccess({
+                  ...isSuccesses,
+                  type: { add: true, edit: false, remove: false },
+                  status: true,
+                });
+            });
+          }
         }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <AddButton>
-                <IconAdd disabled={description === "" ? true : false} />
-              </AddButton>
-            </InputAdornment>
-          ),
-        }}
-        variant="outlined"
-        label="Nova tarefa"
-        placeholder="Ex: Faculdade as 16h"
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      {handleError && (
-        <Stack sx={{ width: "100%" }} spacing={2}>
-          <Alert severity="error" onClose={() => setError(false)}>
-            Essa tarefa já foi cadastrada!
-          </Alert>
-        </Stack>
-      )}
-      {handleSuccess && (
-        <Stack sx={{ width: "100%" }} spacing={2}>
-          <Alert onClose={() => setSucess(false)}>
-            Tarefa criada com sucesso!
-          </Alert>
-        </Stack>
-      )}
-    </FormContainer>
+      >
+        <TextField
+          id="outlined-basic"
+          type="text"
+          sx={smDown ? { width: 350 } : { width: 550 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AddButton>
+                  <IconAdd disabled={description === "" ? true : false} />
+                </AddButton>
+              </InputAdornment>
+            ),
+          }}
+          variant="outlined"
+          label="Nova tarefa"
+          placeholder="Ex: Faculdade as 16h"
+          onChange={(e) => setDescription(e.target.value)}
+          autoFocus={true}
+        />
+      </form>
+    </Grid>
   );
 }

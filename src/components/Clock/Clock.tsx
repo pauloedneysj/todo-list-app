@@ -1,32 +1,14 @@
+import { useMediaQuery, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
-import styled from "styled-components";
-
-const Container = styled.div`
-  display: inline-block;
-  margin-top: 3px;
-`;
-
-const TimeContainer = styled.div`
-  display: flex;
-  font-size: 17px;
-  justify-content: center;
-  align-items: center;
-  white-space: pre;
-`;
-
-const DateContainer = styled.div`
-  display: flex;
-  font-size: 17px;
-  justify-content: center;
-  align-items: center;
-  white-space: pre;
-`;
 
 export default function Clock() {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [second, setSecond] = useState("");
-  const [session, setSession] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -40,7 +22,6 @@ export default function Clock() {
         date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
       const seconds =
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-      const sessions = hours < 12 ? "AM" : "PM";
       const days = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
       const months =
         date.getMonth() === 0
@@ -73,7 +54,6 @@ export default function Clock() {
       setHour(hours.toString());
       setMinute(minutes.toString());
       setSecond(seconds.toString());
-      setSession(sessions);
       setDay(days.toString());
       setMonth(months);
       setYear(years.toString());
@@ -81,18 +61,31 @@ export default function Clock() {
   }, []);
 
   return (
-    <Container>
-      <TimeContainer>
+    <Grid container display="inline-block">
+      <Grid
+        item
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        fontSize={smDown ? "14px" : "17px"}
+        whiteSpace="pre"
+      >
         <div>{`${hour}:`}</div>
         <div>{`${minute}:`}</div>
         <div>{`${second} `}</div>
-        <div>{`${session}`}</div>
-      </TimeContainer>
-      <DateContainer>
+      </Grid>
+      <Grid
+        item
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        fontSize={smDown ? "14px" : "17px"}
+        whiteSpace="pre"
+      >
         <div>{`${day} `}</div>
         <div>{`${month}, `}</div>
         <div>{`${year}`}</div>
-      </DateContainer>
-    </Container>
+      </Grid>
+    </Grid>
   );
 }
