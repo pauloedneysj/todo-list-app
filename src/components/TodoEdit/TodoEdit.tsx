@@ -1,18 +1,9 @@
-import styled from "styled-components";
-import {
-  Divider,
-  Grid,
-  TextField,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useUpdateTodoMutation } from "../../generated/graphql";
 import { IconClose, IconDone } from "../../assets/Icons/Icons";
 import ListItem from "@mui/material/ListItem";
 import { useFeedback } from "../../context/feedback";
-
-const Form = styled.form``;
 
 interface Props {
   id: string;
@@ -21,16 +12,16 @@ interface Props {
 }
 
 export default function TodoEdit({ id, description, handleClick }: Props) {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const { isErrors, isSuccesses, setError, setSuccess } = useFeedback();
+
   const [, updateTodo] = useUpdateTodoMutation();
   const [updatedDescription, setUpdatedDescription] = useState(description);
 
-  const { isErrors, isSuccesses, setError, setSuccess } = useFeedback();
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <Grid width={smDown ? 320 : 515}>
-      <Form
+      <form
         onSubmit={(e) => {
           e.preventDefault();
           if (updatedDescription)
@@ -67,9 +58,7 @@ export default function TodoEdit({ id, description, handleClick }: Props) {
           }
         >
           <TextField
-            sx={{
-              width: 435,
-            }}
+            sx={smDown ? { width: "240px" } : { width: "440px" }}
             id="standard-basic"
             variant="standard"
             label="Editar"
@@ -78,7 +67,7 @@ export default function TodoEdit({ id, description, handleClick }: Props) {
             autoFocus={true}
           />
         </ListItem>
-      </Form>
+      </form>
     </Grid>
   );
 }

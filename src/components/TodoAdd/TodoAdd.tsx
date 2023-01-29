@@ -1,17 +1,14 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { useCreateTodoMutation } from "../../generated/graphql";
-import TextField from "@mui/material/TextField";
+import {
+  Grid,
+  TextField,
+  InputAdornment,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { IconAdd } from "../../assets/Icons/Icons";
-import { Grid, InputAdornment, useMediaQuery, useTheme } from "@mui/material";
 import { useFeedback } from "../../context/feedback";
-
-const AddButton = styled.button`
-  padding: 0;
-  background-color: Transparent;
-  border: none;
-  cursor: pointer;
-`;
 
 export default function TodoAdd() {
   const [, createTodo] = useCreateTodoMutation();
@@ -25,7 +22,11 @@ export default function TodoAdd() {
     <Grid
       item
       container
-      sx={{ width: 500, justifyContent: "center", alignItems: "center" }}
+      sx={{
+        width: 500,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <form
         onSubmit={(e) => {
@@ -51,13 +52,19 @@ export default function TodoAdd() {
         <TextField
           id="outlined-basic"
           type="text"
-          sx={smDown ? { width: 350 } : { width: 550 }}
+          sx={smDown ? { width: "350px" } : { width: "550px" }}
           InputProps={{
             endAdornment: (
-              <InputAdornment position="end">
-                <AddButton>
-                  <IconAdd disabled={description === "" ? true : false} />
-                </AddButton>
+              <InputAdornment
+                position="end"
+                sx={{
+                  padding: 0,
+                  backgroundColor: "Transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <IconAdd disabled={description === "" ? true : false} />
               </InputAdornment>
             ),
           }}

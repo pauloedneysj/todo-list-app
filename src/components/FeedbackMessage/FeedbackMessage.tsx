@@ -1,12 +1,5 @@
-import { Stack, Alert, useTheme, useMediaQuery } from "@mui/material";
-import styled from "styled-components";
+import { Stack, Alert, useTheme, useMediaQuery, Grid } from "@mui/material";
 import { useFeedback } from "../../context/feedback";
-
-const Container = styled.div`
-  display: grid;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default function FeedbackMessage() {
   const { isErrors, isSuccesses, setError, setSuccess } = useFeedback();
@@ -29,9 +22,18 @@ export default function FeedbackMessage() {
     : undefined;
 
   return (
-    <Container>
+    <Grid
+      container
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       {isErrors.status ? (
-        <Stack sx={smDown ? { width: 320 } : { width: 550 }} spacing={2}>
+        <Stack
+          sx={smDown ? { width: "350px" } : { width: "550px" }}
+          spacing={2}
+        >
           <Alert
             severity="error"
             onClose={() => setError({ ...isErrors, status: false })}
@@ -40,7 +42,10 @@ export default function FeedbackMessage() {
           </Alert>
         </Stack>
       ) : isSuccesses.status ? (
-        <Stack sx={smDown ? { width: 350 } : { width: 550 }} spacing={2}>
+        <Stack
+          sx={smDown ? { width: "350px" } : { width: "550px" }}
+          spacing={2}
+        >
           <Alert
             onClose={() => {
               setSuccess({ ...isSuccesses, status: false });
@@ -50,6 +55,6 @@ export default function FeedbackMessage() {
           </Alert>
         </Stack>
       ) : undefined}
-    </Container>
+    </Grid>
   );
 }

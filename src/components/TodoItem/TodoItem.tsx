@@ -39,12 +39,12 @@ export default function TodoItem({
       sx={
         smDown
           ? {
-              width: 350,
+              width: "350px",
               cursor: "text",
               userSelect: "none",
             }
           : {
-              width: 550,
+              width: "550px",
               cursor: "text",
               userSelect: "none",
             }
@@ -75,7 +75,7 @@ export default function TodoItem({
           </>
         }
       >
-        <Grid item sx={{ width: 430 }}>
+        <Grid item sx={{ width: "430px" }}>
           <ListItemText
             primary={description}
             secondary={

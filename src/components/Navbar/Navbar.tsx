@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,9 +6,6 @@ import { ThemeIcon } from "../../assets/Icons/Icons";
 import Clock from "../Clock/Clock";
 
 export default function Navbar() {
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

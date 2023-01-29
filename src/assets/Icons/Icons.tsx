@@ -52,7 +52,7 @@ export function IconClose({ onClick }: Props) {
 
 export function IconAdd({ disabled }: Props) {
   return (
-    <IconButton aria-label="addroundedicon" disabled={disabled}>
+    <IconButton type="submit" aria-label="addroundedicon" disabled={disabled}>
       <AddRoundedIcon />
     </IconButton>
   );
@@ -62,10 +62,8 @@ export function ThemeIcon() {
   const theme = localStorage.getItem("theme") ?? "light";
   const { toggleColorMode } = useTheme();
   return (
-    <>
-      <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-        {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-      </IconButton>
-    </>
+    <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+      {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+    </IconButton>
   );
 }

@@ -45,6 +45,7 @@ export default function TodosList() {
       width="100%"
       height="100vh"
       bgcolor={theme.palette.mode === "dark" ? "black" : "whitesmoke"}
+      color={theme.palette.mode === "dark" ? "white" : "black"}
     >
       <Navbar />
       <Grid
@@ -62,8 +63,9 @@ export default function TodosList() {
           <Grid
             item
             container
-            display="inline-block"
-            paddingTop={smDown ? "50px" : undefined}
+            display="flex"
+            flexDirection="column"
+            paddingTop={smDown ? "50px" : "40px"}
             justifyContent="center"
             alignItems="center"
           >
@@ -89,11 +91,8 @@ export default function TodosList() {
         <Pagination
           sx={
             smDown
-              ? {
-                  position: "fixed",
-                  bottom: 50,
-                }
-              : { position: "fixed", bottom: 50 }
+              ? { position: "fixed", bottom: "50px" }
+              : { position: "fixed", bottom: "50px" }
           }
           count={totalPages}
           defaultPage={page}
