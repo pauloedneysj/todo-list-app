@@ -9,34 +9,50 @@ async function main() {
     scalar ISODate
 
     type Todo {
-      id: String
+      id: String!
       description: String!
+      createdAt: ISODate!
+      updatedAt: ISODate!
+    }
 
-      createdAt: ISODate
-      updatedAt: ISODate
+    input Pagination {
+      limit: Int!
+      offset: Int!
+    }
+
+    type Todos {
+      value: [Todo!]!
+      totalPages: Int!
     }
 
     type Query {
-      todos: [Todo!]!
+      todos(pagination: Pagination): Todos
     }
 
     type Mutation {
-      createTodo(description: String): Todo
-    }
-
-    type Mutation {
-      updateTodo(id: String, description: String, updatedAt: ISODate): Todo
-    }
-
-    type Mutation {
-      deleteTodo(id: String): Todo
+      createTodo(description: String!): Todo
+      updateTodo(id: String!, description: String!, updatedAt: ISODate!): Todo
+      deleteTodo(id: String!): Todo
     }
   `;
 
   const resolvers = {
     Query: {
-      todos: () => {
-        return prisma.todo.findMany();
+      todos: async (_parents: any, { pagination }: any, context: any) => {
+        const todos = await prisma.todo.findMany({
+          skip: pagination.offset,
+          take: pagination.limit,
+          orderBy: { createdAt: "desc" },
+        });
+
+        const { length } = await prisma.todo.findMany();
+
+        const todosResponse = {
+          value: todos,
+          totalPages: Math.ceil(length / 5),
+        };
+
+        return todosResponse;
       },
     },
 
