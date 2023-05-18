@@ -41,12 +41,10 @@ export default function TodoItem({
           ? {
               width: "350px",
               cursor: "text",
-              userSelect: "none",
             }
           : {
               width: "550px",
               cursor: "text",
-              userSelect: "none",
             }
       }
     >
@@ -75,9 +73,27 @@ export default function TodoItem({
           </>
         }
       >
-        <Grid item sx={{ width: "430px" }}>
+        <Grid
+          item
+          sx={{
+            width: "87%",
+            fontSize: "5px",
+          }}
+        >
           <ListItemText
+            sx={{
+              wordWrap: "break-word",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+              lineClamp: 2,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            title={description}
             primary={description}
+          />
+          <ListItemText
             secondary={
               createdAt === updatedAt
                 ? `Criado ${createdAtDate} as ${createdAtTime}`

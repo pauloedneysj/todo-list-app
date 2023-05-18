@@ -23,9 +23,8 @@ export default function TodoAdd() {
       item
       container
       sx={{
-        width: 500,
         justifyContent: "center",
-        alignItems: "center",
+        width: "500px",
       }}
     >
       <form

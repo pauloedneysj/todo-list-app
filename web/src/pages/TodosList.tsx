@@ -40,7 +40,6 @@ export default function TodosList() {
 
   return (
     <Grid
-      container
       position="fixed"
       width="100%"
       height="100vh"
@@ -51,24 +50,15 @@ export default function TodosList() {
       <Grid
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         alignItems="center"
-        paddingBottom={smDown ? "140px" : "140px"}
-        height="100%"
         width="100%"
+        height="100%"
+        paddingTop="5%"
       >
         <TodoAdd />
         <FeedbackMessage />
         <List>
-          <Grid
-            item
-            container
-            display="flex"
-            flexDirection="column"
-            paddingTop={smDown ? "50px" : "40px"}
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid flexDirection="column" height={smDown ? "450px" : "470px"}>
             {todos.map((todo) =>
               handleEdit === todo.id ? (
                 <TodoEdit
@@ -89,11 +79,7 @@ export default function TodosList() {
           </Grid>
         </List>
         <Pagination
-          sx={
-            smDown
-              ? { position: "fixed", bottom: "50px" }
-              : { position: "fixed", bottom: "50px" }
-          }
+          sx={smDown ? { bottom: "0%" } : { bottom: "0%" }}
           count={totalPages}
           defaultPage={page}
           onChange={handlePage}

@@ -22,13 +22,7 @@ export default function FeedbackMessage() {
     : undefined;
 
   return (
-    <Grid
-      container
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid justifyContent="center" alignItems="center">
       {isErrors.status ? (
         <Stack
           sx={smDown ? { width: "350px" } : { width: "550px" }}
