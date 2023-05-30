@@ -62,12 +62,14 @@ export default function TodosList() {
             {todos.map((todo) =>
               handleEdit === todo.id ? (
                 <TodoEdit
+                  key={todo.description}
                   id={todo.id}
                   description={todo.description}
                   handleClick={setHandleEdit}
                 />
               ) : (
                 <TodoItem
+                  key={todo.id}
                   id={todo.id}
                   description={todo.description}
                   createdAt={todo.createdAt}
@@ -79,7 +81,7 @@ export default function TodosList() {
           </Grid>
         </List>
         <Pagination
-          sx={smDown ? { bottom: "0%" } : { bottom: "0%" }}
+          sx={smDown ? { paddingTop: "7%" } : { paddingTop: "2%" }}
           count={totalPages}
           defaultPage={page}
           onChange={handlePage}

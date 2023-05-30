@@ -82,7 +82,7 @@ export default function Clock() {
         fontSize={smDown ? "14px" : "17px"}
         whiteSpace="pre"
       >
-        <div>{`${day} `}</div>
+        <div>{`${day} de `}</div>
         <div>{`${month}, `}</div>
         <div>{`${year}`}</div>
       </Grid>

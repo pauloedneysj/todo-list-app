@@ -4,6 +4,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { IconDelete, IconEdit } from "../../assets/Icons/Icons";
 import { useFeedback } from "../../context/feedback";
 import { useDeleteTodoMutation } from "../../generated/graphql";
+import { format, parseISO } from "date-fns";
 
 interface Props {
   id: string;
@@ -27,10 +28,10 @@ export default function TodoItem({
 
   const { isErrors, isSuccesses, setError, setSuccess } = useFeedback();
 
-  const createdAtDate = new Date(createdAt).toLocaleDateString();
-  const createdAtTime = new Date(createdAt).toLocaleTimeString();
-  const updatedAtDate = new Date(updatedAt).toLocaleDateString();
-  const updatedAtTime = new Date(updatedAt).toLocaleTimeString();
+  const createdAtDate = format(parseISO(createdAt), "dd/MM/yyyy");
+  const createdAtTime = format(parseISO(createdAt), "HH:mm:ss");
+  const updatedAtDate = format(parseISO(updatedAt), "dd/MM/yyyy");
+  const updatedAtTime = format(parseISO(updatedAt), "HH:mm:ss");
 
   return (
     <Grid
